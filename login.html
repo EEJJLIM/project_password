@@ -10,7 +10,7 @@
   <div class="container py-5">
     <div class="card p-4 shadow mx-auto" style="max-width: 400px;">
       <h2 class="text-center mb-4">🔐 로그인</h2>
-      <form>
+      <form onsubmit="handleLogin(event)">
         <div class="mb-3">
           <label for="email" class="form-label">이메일</label>
           <input type="email" class="form-control" id="email" required />
@@ -26,5 +26,51 @@
       </form>
     </div>
   </div>
+
+  <script>
+    const MAX_ATTEMPTS = 5;
+    const LOCKOUT_TIME = 5 * 60 * 1000; // 5분 (밀리초)
+
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // 예시: 실제로는 signup.html에서 입력된 정보를 저장하고 불러오는 구조로 바꿀 수 있음
+      const correctEmail = "test@example.com";
+      const correctPassword = "123456";
+
+      const attempts = parseInt(localStorage.getItem("loginAttempts") || "0");
+      const lockTime = parseInt(localStorage.getItem("lockTime") || "0");
+      const now = Date.now();
+
+      // 잠금 상태 확인
+      if (lockTime && now < lockTime) {
+        const remaining = Math.ceil((lockTime - now) / 1000);
+        alert(`🚫 로그인 잠금 중입니다. ${Math.ceil(remaining / 60)}분 후 다시 시도해주세요.`);
+        return;
+      }
+
+      // 로그인 정보 확인
+      if (email === correctEmail && password === correctPassword) {
+        alert("✅ 로그인 성공!");
+        localStorage.removeItem("loginAttempts");
+        localStorage.removeItem("lockTime");
+        window.location.href = "index.html"; // 로그인 성공 시 이동
+      } else {
+        const newAttempts = attempts + 1;
+        localStorage.setItem("loginAttempts", newAttempts);
+
+        if (newAttempts >= MAX_ATTEMPTS) {
+          const newLockTime = now + LOCKOUT_TIME;
+          localStorage.setItem("lockTime", newLockTime);
+          alert("🚫 비밀번호를 5회 이상 틀렸습니다. 5분간 로그인할 수 없습니다.");
+        } else {
+          alert(`❌ 로그인 실패 (${newAttempts}회 실패). 5회 이상 실패 시 잠금됩니다.`);
+        }
+      }
+    }
+  </script>
 </body>
 </html>
