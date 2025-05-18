@@ -10,7 +10,7 @@
   <div class="container py-5">
     <div class="card p-4 shadow mx-auto" style="max-width: 400px;">
       <h2 class="text-center mb-4">🔐 로그인</h2>
-      <form method="POST" action="/login">
+      <form id="loginForm">
         <div class="mb-3">
           <label for="email" class="form-label">이메일</label>
           <input type="email" class="form-control" name="email" id="email" required />
@@ -20,11 +20,43 @@
           <input type="password" class="form-control" name="password" id="password" required />
         </div>
         <button type="submit" class="btn btn-primary w-100">로그인</button>
-        <div class="text-center mt-3">
-          <a href="signup.html">회원가입 →</a>
-        </div>
       </form>
+      <div class="text-center mt-3">
+        <a href="signup.html">회원가입 →</a>
+      </div>
     </div>
   </div>
+
+  <script>
+    // 임의로 설정된 계정 (로그인할 때 사용할 계정)
+    const validEmail = "user@example.com";
+    const validPassword = "password123";
+
+    // 로그인 폼 제출 이벤트 처리
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // 이메일과 비밀번호가 올바른지 확인
+      if (email === validEmail && password === validPassword) {
+        // 로컬 스토리지에 로그인 정보 저장
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userPassword", password);
+
+        // 로그인 성공 팝업 띄우기
+        alert("✅ 로그인 성공!");
+
+        // 로그인 후 index.html로 리디렉션
+        window.location.href = "index.html";
+      } else {
+        // 잘못된 로그인 정보
+        alert("❌ 로그인 실패! 올바른 이메일과 비밀번호를 입력하세요.");
+      }
+    });
+  </script>
 </body>
 </html>
+
+
+
