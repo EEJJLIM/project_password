@@ -44,11 +44,10 @@
         localStorage.setItem("userEmail", email);
         localStorage.setItem("userPassword", password);
 
-        // 로그인 성공 팝업 띄우기
-        alert("✅ 로그인 성공!");
+      
 
         // 로그인 후 index.html로 리디렉션
-        window.location.href = "index.html";
+        window.location.href = "otp.html";
       } else {
         // 잘못된 로그인 정보
         alert("❌ 로그인 실패! 올바른 이메일과 비밀번호를 입력하세요.");
@@ -57,6 +56,5 @@
   </script>
 </body>
 </html>
-
 
 
