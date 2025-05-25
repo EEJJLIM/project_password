@@ -5,18 +5,113 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>자동로그인</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<style>
+.site-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px 40px;
+}
+.site-icon {
+    width: 100px;
+    margin-bottom: 32px;
+    text-align: center;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+.site-icon:hover {
+    transform: scale(1.12);
+    z-index: 2;
+}
+.site-icon img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.07);
+    margin-bottom: 10px;
+}
+.site-label {
+    font-size: 16px;
+    color: #333;
+    margin-top: 2px;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+</style>
 </head>
 <body>
 <div class="container py-5">
     <div class="card p-4 shadow mx-auto text-center" style="max-width: 600px;">
-    <h1 class="mb-4">🏠 자동로그인</h1>
-    <p class="lead">자동로그인</p>
-
-    <div class="mt-4">
-        
-        <a href="login.html" class="btn btn-secondary w-100">로그아웃</a>
-    </div>
+        <h1 class="mb-4">🏠 자동로그인</h1>
+        <p class="lead">자동로그인 중입니다.</p>
+        <div class="mt-4">
+            <a href="#" onclick="logout()" class="btn btn-secondary w-100" aria-label="로그아웃">로그아웃</a>
+        </div>
+        <hr class="my-4" />
+        <div>
+            <p class="mb-2">다른 사이트 로그인</p>
+            <div class="site-icons">
+                <!-- Naver -->
+                <a class="site-icon" href="https://nid.naver.com/nidlogin.login" target="_blank" title="Naver Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Naver_Logotype.svg" alt="Naver" />
+                    <span class="site-label">Naver</span>
+                </a>
+                <!-- YouTube -->
+                <a class="site-icon" href="https://accounts.google.com/ServiceLogin?service=youtube" target="_blank" title="YouTube Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube" />
+                    <span class="site-label">YouTube</span>
+                </a>
+                <!-- Facebook -->
+                <a class="site-icon" href="https://www.facebook.com/login" target="_blank" title="Facebook Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" />
+                    <span class="site-label">Facebook</span>
+                </a>
+                <!-- Instagram -->
+                <a class="site-icon" href="https://www.instagram.com/accounts/login/" target="_blank" title="Instagram Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
+                    <span class="site-label">Instagram</span>
+                </a>
+                <!-- Twitter -->
+                <a class="site-icon" href="https://twitter.com/login" target="_blank" title="Twitter Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Logo_of_Twitter.svg" alt="Twitter" />
+                    <span class="site-label">Twitter</span>
+                </a>
+                <!-- Google -->
+                <a class="site-icon" href="https://accounts.google.com/signin" target="_blank" title="Google Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" />
+                    <span class="site-label">Google</span>
+                </a>
+                <!-- Amazon -->
+                <a class="site-icon" href="https://www.amazon.com/ap/signin" target="_blank" title="Amazon Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" />
+                    <span class="site-label">Amazon</span>
+                </a>
+                <!-- LinkedIn -->
+                <a class="site-icon" href="https://www.linkedin.com/login" target="_blank" title="LinkedIn Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" />
+                    <span class="site-label">LinkedIn</span>
+                </a>
+                <!-- Pinterest -->
+                <a class="site-icon" href="https://www.pinterest.com/login/" target="_blank" title="Pinterest Login">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Pinterest-logo.png" alt="Pinterest" />
+                    <span class="site-label">Pinterest</span>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+function logout() {
+    document.cookie = "autoLogin=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    window.location.href = "login.html";
+}
+</script>
 </body>
 </html>
