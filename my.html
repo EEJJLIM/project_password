@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>내 사이트 - 포털 메인</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --main-bg: #f4f7fa;
+      --main-text: #223355;
+      --primary: #304ffe;
+      --accent: #66ffe0;
+      --lavender: #a48fff;
+      --quick-bg: #e6f7f4;
+      --footer: #a48fff;
+      --header-grad: linear-gradient(90deg, #223355 60%, #a48fff 100%);
+    }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', Arial, sans-serif;
+      background: var(--main-bg);
+      color: var(--main-text);
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      --main-bg: #181a22;
+      --main-text: #f5f5f7;
+      --primary: #66ffe0;
+      --accent: #a48fff;
+      --lavender: #304ffe;
+      --quick-bg: #23243a;
+      --footer: #304ffe;
+      --header-grad: linear-gradient(90deg, #23243a 60%, #304ffe 100%);
+    }
+    header {
+      background: var(--header-grad);
+      color: #fff;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-shadow: 1px 2px 8px #22335555;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent);
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .clock {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      color: #fff;
+      background: rgba(0,0,0,0.07);
+      padding: 0.3rem 0.9rem;
+      border-radius: 18px;
+    }
+    .mode-btn {
+      background: var(--accent);
+      color: #223355;
+      border: none;
+      border-radius: 18px;
+      padding: 0.4rem 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .mode-btn:hover {
+      background: var(--lavender);
+      color: #fff;
+    }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 7rem;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 12px #a48fff33;
+    }
+    .search-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .search-form input {
+      padding: 0.8rem;
+      font-size: 1.1rem;
+      border: 1.5px solid var(--lavender);
+      border-radius: 20px;
+      width: 320px;
+      background: #fff;
+      color: var(--main-text);
+      transition: border 0.2s;
+    }
+    .search-form input:focus {
+      border: 1.5px solid var(--primary);
+      outline: none;
+    }
+    .search-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 8px #22335522;
+      transition: background 0.2s;
+    }
+    .search-form button:hover {
+      background: var(--accent);
+      color: #223355;
+    }
+    .suggestion-box {
+      position: absolute;
+      top: 110%;
+      left: 0;
+      width: 320px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 0 0 14px 14px;
+      box-shadow: 0 2px 8px #22335522;
+      z-index: 10;
+      display: none;
+    }
+    .suggestion-box.active {
+      display: block;
+    }
+    .suggestion-box div {
+      padding: 0.7rem 1.2rem;
+      cursor: pointer;
+      color: #223355;
+      transition: background 0.2s;
+    }
+    .suggestion-box div:hover {
+      background: var(--accent);
+      color: #223355;
+    }
+    .quick-links {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .quick-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      background: var(--quick-bg);
+      padding: 0.5rem 1.2rem;
+      border-radius: 18px;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 1px 6px #a48fff22;
+    }
+    .quick-links a:hover {
+      background: var(--lavender);
+      color: #fff;
+    }
+    .contact-section {
+      margin-top: 4rem;
+      background: var(--quick-bg);
+      padding: 2rem 2.5rem;
+      border-radius: 18px;
+      box-shadow: 0 2px 12px #a48fff22;
+      max-width: 420px;
+      width: 100%;
+    }
+    .contact-section h2 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+    .contact-section form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .contact-section input,
+    .contact-section textarea {
+      padding: 0.7rem;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      background: #fff;
+      color: var(--main-text);
+      resize: none;
+    }
+    .contact-section button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.6rem 1.3rem;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      align-self: flex-end;
+    }
+    .contact-section button:hover {
+      background: var(--lavender);
+      color: #fff;
+    }
+    .contact-msg {
+      margin-top: 0.7rem;
+      font-size: 1rem;
+      color: var(--primary);
+    }
+    .top-btn {
+      position: fixed;
+      bottom: 35px;
+      right: 35px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 8px #22335544;
+      cursor: pointer;
+      display: none;
+      z-index: 999;
+      transition: background 0.2s;
+    }
+    .top-btn:hover {
+      background: var(--accent);
+      color: #223355;
+    }
+    footer {
+      text-align: center;
+      color: var(--footer);
+      padding: 2rem 0 1.5rem 0;
+      font-size: 1rem;
+      margin-top: 7rem;
+      background: none;
+    }
+    @media (max-width: 600px) {
+      header, main {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .search-form input, .suggestion-box {
+        width: 160px;
+      }
+      .quick-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .contact-section {
+        padding: 1.2rem 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">내사이트</div>
+    <nav>
+      <a href="#">로그인</a>
+      <a href="#">회원가입</a>
+      <a href="#">고객센터</a>
+    </nav>
+    <div class="header-right">
+      <span class="clock" id="clock"></span>
+      <button class="mode-btn" id="modeBtn">다크모드</button>
+    </div>
+  </header>
+  <main>
+    <h1>무엇이든 검색하세요</h1>
+    <form class="search-form" onsubmit="return false;">
+      <input type="text" id="searchInput" placeholder="검색어를 입력하세요" autocomplete="off" />
+      <button type="submit">검색</button>
+      <div class="suggestion-box" id="suggestionBox"></div>
+    </form>
+    <div class="quick-links">
+      <a href="#">뉴스</a>
+      <a href="#">메일</a>
+      <a href="#">블로그</a>
+      <a href="#">지도</a>
+      <a href="#">쇼핑</a>
+    </div>
+    <section class="contact-section">
+      <h2>문의하기</h2>
+      <form id="contactForm">
+        <input type="text" id="contactName" placeholder="이름" required>
+        <input type="email" id="contactEmail" placeholder="이메일" required>
+        <textarea id="contactMsg" rows="3" placeholder="문의 내용을 입력하세요" required></textarea>
+        <button type="submit">보내기</button>
+      </form>
+      <div class="contact-msg" id="contactMsgBox"></div>
+    </section>
+  </main>
+  <button class="top-btn" id="topBtn" title="상단으로"><span>&uarr;</span></button>
+  <footer>
+    &copy; 2025 내사이트. All rights reserved.
+  </footer>
+  <script>
+    // 실시간 시계
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 다크모드 토글
+    const modeBtn = document.getElementById('modeBtn');
+    modeBtn.onclick = function() {
+      document.body.classList.toggle('dark');
+      modeBtn.textContent = document.body.classList.contains('dark') ? '라이트모드' : '다크모드';
+    };
+
+    // 검색어 추천 기능
+    const suggestions = ['뉴스', '날씨', '주식', '코로나', '영화', '맛집', '지도', '쇼핑', '블로그', '메일'];
+    const searchInput = document.getElementById('searchInput');
+    const suggestionBox = document.getElementById('suggestionBox');
+    searchInput.addEventListener('input', function() {
+      const val = this.value.trim();
+      if (val === '') {
+        suggestionBox.classList.remove('active');
+        return;
+      }
+      const filtered = suggestions.filter(s => s.includes(val));
+      if (filtered.length === 0) {
+        suggestionBox.classList.remove('active');
+        return;
+      }
+      suggestionBox.innerHTML = filtered.map(s => `<div>${s}</div>`).join('');
+      suggestionBox.classList.add('active');
+    });
+    suggestionBox.addEventListener('click', function(e) {
+      if (e.target.tagName === 'DIV') {
+        searchInput.value = e.target.textContent;
+        suggestionBox.classList.remove('active');
+      }
+    });
+    document.addEventListener('click', function(e) {
+      if (!suggestionBox.contains(e.target) && e.target !== searchInput) {
+        suggestionBox.classList.remove('active');
+      }
+    });
+
+    // 문의 폼 처리
+    document.getElementById('contactForm').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('contactMsgBox').textContent = '문의가 정상적으로 접수되었습니다!';
+      this.reset();
+      setTimeout(() => {
+        document.getElementById('contactMsgBox').textContent = '';
+      }, 2500);
+    };
+
+    // 상단으로 이동 버튼
+    const topBtn = document.getElementById('topBtn');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 300) {
+        topBtn.style.display = 'block';
+      } else {
+        topBtn.style.display = 'none';
+      }
+    });
+    topBtn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+  <script>
+window.onload = function() {
+  const id = localStorage.getItem('autoLoginId');
+  const pw = localStorage.getItem('autoLoginPw');
+  if (id && pw) {
+    // 로그인 폼이 있다면 자동 입력 및 제출
+    if (document.getElementById('userId') && document.getElementById('userPw') && document.getElementById('loginForm')) {
+      document.getElementById('userId').value = id;
+      document.getElementById('userPw').value = pw;
+      document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+    } else {
+      // 로그인 폼이 없다면 환영 메시지 등 처리
+      alert('자동 로그인 정보: ' + id + ' / ' + pw);
+    }
+    // 보안을 위해 정보 삭제
+    localStorage.removeItem('autoLoginId');
+    localStorage.removeItem('autoLoginPw');
+  }
+};
+</script>
+
+</body>
+</html>

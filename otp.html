@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>OTP 인증</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
-<div class="container py-5">
-    <div class="card p-4 shadow mx-auto" style="max-width: 400px;">
-    <h2 class="text-center mb-4">🔐 OTP 인증</h2>
-    <form id="otpForm">
-        <div class="mb-3">
-        <label for="otp" class="form-label">OTP 코드</label>
-        <input type="text" class="form-control" id="otp" required />
-        </div>
-        <button type="submit" class="btn btn-primary w-100">인증</button>
-    </form>
-    <div class="text-center mt-3">
-        <a href="login.html">← 로그인 페이지</a>
+  <head>
+    <meta charset="UTF-8" />
+    <title>🔐 OTP 인증</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="login">
+    <div class="login-box">
+      <h2><span class="emoji">🔐</span> OTP 인증</h2>
+      <form id="otpForm">
+        <input type="text" id="otpCode" placeholder="OTP 코드" required />
+        <button type="submit">인증</button>
+      </form>
+      <a href="login.html" class="login-link">&larr; 로그인 페이지</a>
+      <div id="otpMsg" class="msg"></div>
     </div>
-    </div>
-</div>
-
-<script>
-    document.getElementById("otpForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const inputOtp = document.getElementById("otp").value;
-
-      // 간단한 인증: "123456" 이라고 입력하면 인증 성공
-    if (inputOtp === "123456") {
-        window.location.href = "home.html";
-    } else {
-        alert("❌ 잘못된 OTP 코드입니다.");
-    }
-    });
-</script>
-</body>
+    <script>
+      document.getElementById('otpForm').onsubmit = function (e) {
+        e.preventDefault();
+        const code = document.getElementById('otpCode').value.trim();
+        const msg = document.getElementById('otpMsg');
+        // 실제 서비스에서는 서버에서 OTP 검증 필요
+        if (code === '123456') {
+          msg.textContent = '인증 성공! 로그인 페이지로 이동합니다.';
+          msg.className = 'msg success';
+          setTimeout(() => (location.href = 'login.html'), 1200);
+        } else {
+          msg.textContent = '잘못된 OTP 코드입니다.';
+          msg.className = 'msg error';
+        }
+      };
+    </script>
+  </body>
 </html>
-
-
