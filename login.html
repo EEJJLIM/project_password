@@ -1,49 +1,98 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>🔐 로그인</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f2f2f2; }
+        .login-wrapper { width: 350px; margin: 100px auto; background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+        h2 { text-align: center; color: #6A24FE; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; margin: 8px 0; border-radius: 4px; border: 1px solid #ccc; }
+        input[type="submit"] { width: 100%; padding: 12px; background: #6A24FE; color: #fff; border: none; border-radius: 4px; font-size: 16px; }
+        .msg { color: red; text-align: center; margin-top: 12px; }
+    </style>
 </head>
-<body class="login">
-  <div class="login-box">
-    <h2><span class="emoji">🔐</span> 로그인</h2>
-    <form id="loginForm">
-      <input type="text" id="loginId" placeholder="이메일" autocomplete="username" required>
-      <input type="password" id="loginPw" placeholder="비밀번호" autocomplete="current-password" required>
-      <button type="submit">로그인</button>
+<body>
+<div class="login-wrapper">
+    <h2>로그인</h2>
+    <form id="login-form">
+        <input type="text" id="userName" placeholder="아이디" required>
+        <input type="password" id="userPassword" placeholder="비밀번호" required>
+        <input type="submit" value="로그인">
     </form>
-    <a href="signup.html" class="login-link">회원가입 &rarr;</a>
-    <div id="loginMsg" class="msg"></div>
-  </div>
-  <script>
-    document.getElementById('loginForm').onsubmit = function(e) {
-      e.preventDefault();
-      const id = document.getElementById('loginId').value.trim();
-      const pw = document.getElementById('loginPw').value;
-      const msg = document.getElementById('loginMsg');
-      const savedPw = localStorage.getItem('user_' + id);
-      if (!savedPw) {
-        msg.textContent = "존재하지 않는 아이디입니다.";
-        msg.className = "msg error";
+    <div class="msg" id="msg"></div>
+</div>
+<script>
+const MAX_ATTEMPTS = 5;
+const LOCK_TIME = 5 * 60 * 1000; // 5분(밀리초)
+let failCount = 0;
+let lockUntil = null;
+
+function getLockUntil() {
+    return parseInt(localStorage.getItem('lockUntil')) || null;
+}
+function setLockUntil(ts) {
+    localStorage.setItem('lockUntil', ts);
+}
+function clearLockUntil() {
+    localStorage.removeItem('lockUntil');
+}
+function getFailCount() {
+    return parseInt(localStorage.getItem('failCount')) || 0;
+}
+function setFailCount(cnt) {
+    localStorage.setItem('failCount', cnt);
+}
+function clearFailCount() {
+    localStorage.removeItem('failCount');
+}
+
+document.getElementById("login-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    lockUntil = getLockUntil();
+    failCount = getFailCount();
+
+    if (lockUntil && Date.now() < lockUntil) {
+        const left = Math.ceil((lockUntil - Date.now()) / 1000);
+        document.getElementById("msg").textContent = `5회 이상 실패하여 ${left}초 후에 다시 시도하세요.`;
         return;
-      }
-      if (savedPw !== pw) {
-        msg.textContent = "비밀번호가 올바르지 않습니다.";
-        msg.className = "msg error";
-        return;
-      }
-      msg.textContent = "로그인 성공! 홈으로 이동합니다.";
-      msg.className = "msg success";
-      localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('currentUser', id);
-      setTimeout(() => location.href = "index.html", 1000);
-    };
-  </script>
+    }
+
+    // 예시: 아이디 test, 비밀번호 1234
+    const username = document.getElementById("userName").value;
+    const password = document.getElementById("userPassword").value;
+    const isLoginSuccess = (username === "test" && password === "1234");
+
+    if (isLoginSuccess) {
+        clearFailCount();
+        clearLockUntil();
+        document.getElementById("msg").style.color = "green";
+        document.getElementById("msg").textContent = "로그인 성공!";
+        // 실제 서비스에서는 페이지 이동 등 처리
+    } else {
+        failCount += 1;
+        setFailCount(failCount);
+        if (failCount >= MAX_ATTEMPTS) {
+            lockUntil = Date.now() + LOCK_TIME;
+            setLockUntil(lockUntil);
+            document.getElementById("msg").style.color = "red";
+            document.getElementById("msg").textContent = "5회 이상 실패하여 5분간 로그인이 차단됩니다.";
+        } else {
+            document.getElementById("msg").style.color = "red";
+            document.getElementById("msg").textContent = `아이디 또는 비밀번호가 틀렸습니다. (${failCount}회 실패)`;
+        }
+    }
+});
+
+// 새로고침 시에도 차단 유지
+window.onload = function() {
+    lockUntil = getLockUntil();
+    if (lockUntil && Date.now() < lockUntil) {
+        const left = Math.ceil((lockUntil - Date.now()) / 1000);
+        document.getElementById("msg").textContent = `5회 이상 실패하여 ${left}초 후에 다시 시도하세요.`;
+    }
+};
+</script>
 </body>
 </html>
-
-
-
-
-
